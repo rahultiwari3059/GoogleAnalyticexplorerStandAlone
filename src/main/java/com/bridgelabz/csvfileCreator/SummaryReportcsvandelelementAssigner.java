@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
 import com.bridgelab.model.GaReportInputModel;
@@ -31,10 +32,16 @@ public class SummaryReportcsvandelelementAssigner {
 
 		// creating object of MainCsvCreator
 		MainCsvCreator mainCsvCreatorObject = new MainCsvCreator();
+		//creating object of summaryReportCSvCreator clASS
+		SummaryReportCSvCreator summaryReportCSvCreatorObject = new SummaryReportCSvCreator();
 
 		// creating object of ResponseElementModel ArrayList
 		ArrayList<ResponseElementModel> responseElementModelArrayList = new ArrayList<ResponseElementModel>();
 
+		// HasMap of date and set
+		HashMap<String, HashSet<String>> map = new HashMap<String, HashSet<String>>();
+		
+	
 		// creating HashMap to find number of user on particular day
 		HashMap<String, Integer> dateHashMap = new HashMap<String, Integer>();
 		// creating HashMap to find out number of unique android id
@@ -79,6 +86,9 @@ public class SummaryReportcsvandelelementAssigner {
 			if (dimensionResponseArraySize == 3) {
 
 				for (int r = 0; r < rowResponseArraySize; r++) {
+					// HashSet for unique andoidId
+					HashSet<String> androidset = new HashSet<String>();
+					
 					// creating object of ResponseElementModel
 					ResponseElementModel responseElementModelObject = new ResponseElementModel();
 					// setting row size in model class
@@ -100,7 +110,7 @@ public class SummaryReportcsvandelelementAssigner {
 						if (dimensionCount % 3 == 1) {
 							// setting android id in model class
 							responseElementModelObject.setmAndroidId(dimensionResponseArraList.get(dimensionCount));
-
+							androidset.add(dimensionResponseArraList.get(dimensionCount));
 							// putting into androidIdHashMap
 							androidIdHashMap.put(responseElementModelObject.getmAndroidId(), androidIdHashMapCount++);
 
@@ -117,10 +127,12 @@ public class SummaryReportcsvandelelementAssigner {
 
 						}
 
+						
 						// to fetch unique user on particular day
 						uniqueUserPerDay.put(responseElementModelObject.getmDate(),
 								responseElementModelObject.getmAndroidId());
-
+						
+						map.put(responseElementModelObject.getmDate(), androidset);
 						dimensionCount++;
 					}
 					// appending metric value and setting into model
@@ -144,7 +156,7 @@ public class SummaryReportcsvandelelementAssigner {
 					uniqueAndroidId.add(m1.getKey());
 					// System.out.println(m1.getKey() + " " + m1.getValue());
 				}
-
+			
 				// adding into date ArrayList
 				for (Entry<String, Integer> m1 : dateHashMap.entrySet()) {
 					// taking value
@@ -302,7 +314,7 @@ public class SummaryReportcsvandelelementAssigner {
 							// m1.getValue());
 						}
 						System.out.println(dateHashMap.size());
-						// adding into date arraylist
+						// adding into date ArrayList
 						for (Entry<String, Integer> m1 : dateHashMap.entrySet()) {
 							// taking value
 							Uniquedate.add(m1.getKey());
@@ -315,7 +327,7 @@ public class SummaryReportcsvandelelementAssigner {
 				}
 
 			}
-
+/*
 			// CSV creator for number of summary Report
 			File file = new File(csvFilePath + "summaryreport.csv");
 			if (!file.exists()) {
@@ -350,10 +362,13 @@ public class SummaryReportcsvandelelementAssigner {
 				bw.newLine();
 			}
 			bw.close();
-
+*/
+			
 			// calling mainCsvCreator of MainCsvCreator
 			mainCsvCreatorObject.mainCsvCreator(responseElementModelArrayList, gaReportInputModel);
-
+			
+			// calling summaryReportCSvCreator of SummaryReportCSvCreator
+			summaryReportCSvCreatorObject.summaryReportCSvCreator(responseElementModelArrayList, gaReportInputModel,csvFilePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

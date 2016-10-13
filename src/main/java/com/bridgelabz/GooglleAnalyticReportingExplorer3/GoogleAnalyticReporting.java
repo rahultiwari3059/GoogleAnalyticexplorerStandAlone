@@ -19,11 +19,9 @@ public class GoogleAnalyticReporting {
 			// creating object of DirectCsvFileCreator
 			SummaryReportcsvandelelementAssigner summaryReportcsvandelelementAssignerObject = new SummaryReportcsvandelelementAssigner();
 
-			System.out.println("enter the Json file path");
-			Scanner sc = new Scanner(System.in);
-
+	
 			// taking JSON file path
-			String jsonfilepath = sc.next();
+			String jsonfilepath = args[0];
 
 			// creating object GaReprtInfoArrayList
 			GaReprtInfoArrayList GaReprtInfoArrayListObject = new GaReprtInfoArrayList();
