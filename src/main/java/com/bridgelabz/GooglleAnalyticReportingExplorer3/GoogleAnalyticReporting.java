@@ -37,7 +37,7 @@ public class GoogleAnalyticReporting {
 						.getResponse(gaReportInputInfoArrayList.get(i));
 
 				// creating csv file by passing input info and response
-				summaryReportcsvandelelementAssignerObject.directCsvFileCreator(gaReportInputInfoArrayList.get(i),
+				summaryReportcsvandelelementAssignerObject.responseElementmodelAssigner(gaReportInputInfoArrayList.get(i),
 						responseModelArrayList.get(i));
 			}
 		} catch (Exception e) {

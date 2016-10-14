@@ -38,6 +38,12 @@ public class MainCsvCreator {
 
 	// HashSet for unique date
 	HashSet<String> dateSet = new HashSet<String>();
+	
+	// HashSet to get unique AndroidId of AppOpen
+	HashSet<String> androidIdAppOpen = new HashSet<String>();
+	
+	// HashSet to get unique AndroidId of AppReOpen
+	HashSet<String> androidIdReAppOpen = new HashSet<String>();
 
 	public void mainCsvCreator(ArrayList<ResponseElementModel> responseElementModelArrayList,
 			GaReportInputModel gaReportInputModel) {
@@ -57,7 +63,7 @@ public class MainCsvCreator {
 						"gaid^gadiscription^Date^AndroidId^Eventcategory^connectiontype^Totalevents^Sessions^Screenviews^Exit^ExitRate^");
 				bw3.newLine();
 			}
-
+/*---------------------CSv File creator for App open----------------------------------------*/
 			// app open csv creator
 			if (gaReportInputModel.mGaID.equals("1")) {
 
@@ -92,6 +98,8 @@ public class MainCsvCreator {
 						bw1.append("^");
 						appOpenModelObject.setmAndroidId(responseElementModelArrayList.get(i).getmAndroidId());
 						bw1.append(responseElementModelArrayList.get(i).getmEventCategory());
+						
+						androidIdAppOpen.add(responseElementModelArrayList.get(i).getmAndroidId());
 						bw1.append("^");
 						appOpenModelObject.setmEventCategory(responseElementModelArrayList.get(i).getmEventCategory());
 						bw1.append(" ");
@@ -115,6 +123,8 @@ public class MainCsvCreator {
 				bw1.close();
 
 			}
+/*-------------------------CSv File creator for AppReopen----------------------------------------*/
+
 			// creating csv for Re open
 			else {
 				if (gaReportInputModel.mGaID.equals("2")) {
@@ -149,7 +159,8 @@ public class MainCsvCreator {
 						bw2.append(responseElementModelArrayList.get(i).getmAndroidId());
 						bw2.append("^");
 						appReOpenModelObject.setmAndroidId(responseElementModelArrayList.get(i).getmAndroidId());
-
+						androidIdReAppOpen.add(responseElementModelArrayList.get(i).getmAndroidId());
+						
 						bw2.append(responseElementModelArrayList.get(i).getmEventCategory());
 						bw2.append("^");
 						appReOpenModelObject
@@ -175,6 +186,7 @@ public class MainCsvCreator {
 					bw2.close();
 
 				} else
+/*---------------------CSv File creator for others ----------------------------------------*/
 
 				{
 
@@ -188,15 +200,6 @@ public class MainCsvCreator {
 
 						if (responseElementModelArrayList.get(i).getmDimensionSize() == 3) {
 
-							dateSet.add(responseElementModelArrayList.get(i).getmDate());
-
-							for (int j = 0; j < responseElementModelArrayList.size(); j++) {
-								// adding into HashSet
-								androidset.add(responseElementModelArrayList.get(j).getmAndroidId());
-
-								map.put(responseElementModelArrayList.get(j).getmDate(), androidset);
-
-							}
 							bw3.append(gaReportInputModel.getmGaID());
 							bw3.append("^");
 							bw3.append(gaReportInputModel.getmGaDiscription());
@@ -235,9 +238,11 @@ public class MainCsvCreator {
 
 							// adding into hashset
 							androidset.add(responseElementModelArrayList.get(i).getmAndroidId());
-							if (androidset.contains(responseElementModelArrayList.get(i).getmAndroidId())) {
-
-							} else {
+						
+								bw3.append(gaReportInputModel.getmGaID());
+								bw3.append("^");
+								bw3.append(gaReportInputModel.getmGaDiscription());
+								bw3.append("^");
 								bw3.append(responseElementModelArrayList.get(i).getmDate());
 								bw3.append("^");
 								bw3.append(responseElementModelArrayList.get(i).getmAndroidId());
@@ -257,9 +262,13 @@ public class MainCsvCreator {
 								bw3.append(responseElementModelArrayList.get(i).getmExitRate());
 								bw3.append("^");
 							}
-						} else {
+						 else {
 							if (responseElementModelArrayList.get(i).getmMetricSize() == 1
 									&& responseElementModelArrayList.get(i).getmDimensionSize() == 2) {
+								bw3.append(gaReportInputModel.getmGaID());
+								bw3.append("^");
+								bw3.append(gaReportInputModel.getmGaDiscription());
+								bw3.append("^");
 								bw3.append(responseElementModelArrayList.get(i).getmDate());
 								bw3.append("^");
 								bw3.append(responseElementModelArrayList.get(i).getmAndroidId());
@@ -288,5 +297,6 @@ public class MainCsvCreator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 }

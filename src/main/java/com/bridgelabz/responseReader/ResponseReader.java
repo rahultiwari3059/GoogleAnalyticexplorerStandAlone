@@ -52,6 +52,7 @@ public class ResponseReader {
 					// storing row JSONArray size into temp1
 					responseModelObject.setRowArraySize(rowarray.size());
 					// reading rows JSONArray
+					//System.out.println(rowarray.size());
 					for (int i = 0; i < rowarray.size(); i++) {
 						// getting first object and converting into JSONObject
 						JSONObject rowobject = (JSONObject) rowarray.get(i);
